@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Edit Movie</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-warning">
+        Update Movie
+    </button>
+
+</form>
+
+{% if user == movie.user %}
+
+<a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger">
+    Delete Movie
+</a>
+
+{% endif %}
+
+{% endblock %}

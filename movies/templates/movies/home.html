@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Movie Recommendation Platform</h2>
+
+<form method="GET">
+
+<select name="category" class="form-select mb-3">
+
+<option value="">All Categories</option>
+
+{% for category in categories %}
+
+<option value="{{ category.id }}">
+
+{{ category.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+<input
+type="text"
+name="search"
+class="form-control mb-3"
+placeholder="Search Movie">
+
+<button class="btn btn-primary">
+
+Search
+
+</button>
+
+</form>
+
+
+<div class="row">
+
+    {% for movie in movies %}
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card h-100">
+
+            <img src="{{ movie.poster.url }}"
+                 class="card-img-top"
+                 style="height:400px; object-fit:cover;">
+
+            <div class="card-body">
+
+                <h5 class="card-title">
+
+    <a href="{% url 'movie_detail' movie.id %}">
+
+        {{ movie.title }}
+
+    </a>
+
+</h5>
+
+
+                <p class="card-text">
+                    {{ movie.description|truncatewords:20 }}
+                </p>
+
+                <p>
+                    <strong>Category:</strong>
+                    {{ movie.category.name }}
+                </p>
+
+                <p>
+                    ⭐ {{ movie.rating }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            No movies available.
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+
+{% endblock %}

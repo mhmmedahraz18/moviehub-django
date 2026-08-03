@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ movie.title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <img src="{{ movie.poster.url }}"
+             class="img-fluid rounded">
+
+    </div>
+
+    <div class="col-md-8">
+
+        <h2>{{ movie.title }}</h2>
+
+        <hr>
+
+        <p><strong>Description:</strong></p>
+        <p>{{ movie.description }}</p>
+
+        <p><strong>Actors:</strong> {{ movie.actors }}</p>
+
+        <p><strong>Category:</strong> {{ movie.category.name }}</p>
+
+        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+
+        <p><strong>Rating:</strong> ⭐ {{ movie.rating }}</p>
+
+        <p>
+
+            <a href="{{ movie.youtube_link }}"
+               target="_blank"
+               class="btn btn-danger">
+
+                Watch Trailer
+
+            </a>
+
+            {% if user == movie.user %}
+
+<a href="{% url 'edit_movie' movie.id %}"
+   class="btn btn-warning">
+
+    Edit Movie
+
+</a>
+
+<a href="{% url 'delete_movie' movie.id %}"
+   class="btn btn-danger">
+
+    Delete Movie
+
+</a>
+
+{% endif %}
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
