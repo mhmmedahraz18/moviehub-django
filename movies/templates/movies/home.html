@@ -1,106 +1,129 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Home
-{% endblock %}
+{% block title %}Discover Movies - MovieHub{% endblock %}
 
 {% block content %}
 
-<h2 class="mb-4">Movie Recommendation Platform</h2>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Discover Your Next Favorite Movie</h1>
+        <p>Browse recommendations from our community, add your own favorites, and share with others</p>
+    </div>
+</section>
 
-<form method="GET">
-
-<select name="category" class="form-select mb-3">
-
-<option value="">All Categories</option>
-
-{% for category in categories %}
-
-<option value="{{ category.id }}">
-
-{{ category.name }}
-
-</option>
-
-{% endfor %}
-
-</select>
-
-<input
-type="text"
-name="search"
-class="form-control mb-3"
-placeholder="Search Movie">
-
-<button class="btn btn-primary">
-
-Search
-
-</button>
-
-</form>
-
-
-<div class="row">
-
-    {% for movie in movies %}
-
-    <div class="col-md-4 mb-4">
-
-        <div class="card h-100">
-
-            <img src="{{ movie.poster.url }}"
-                 class="card-img-top"
-                 style="height:400px; object-fit:cover;">
-
-            <div class="card-body">
-
-                <h5 class="card-title">
-
-    <a href="{% url 'movie_detail' movie.id %}">
-
-        {{ movie.title }}
-
-    </a>
-
-</h5>
-
-
-                <p class="card-text">
-                    {{ movie.description|truncatewords:20 }}
-                </p>
-
-                <p>
-                    <strong>Category:</strong>
-                    {{ movie.category.name }}
-                </p>
-
-                <p>
-                    ⭐ {{ movie.rating }}
-                </p>
-
+<!-- Search & Filter Section -->
+<section class="search-section">
+    <form method="GET" class="search-form">
+        <div class="search-controls">
+            <!-- Category Filter -->
+            <div class="filter-group">
+                <label for="category-select">Category</label>
+                <select id="category-select" name="category" class="form-input">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if request.GET.category|stringformat:"s" == category.id|stringformat:"s" %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
             </div>
 
+            <!-- Search Input -->
+            <div class="filter-group">
+                <label for="search-input">Search</label>
+                <input
+                    type="text"
+                    id="search-input"
+                    name="search"
+                    class="form-input"
+                    placeholder="Search by title, actors, or keywords..."
+                    value="{{ request.GET.search }}"
+                >
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary search-btn">
+                Search
+            </button>
+        </div>
+    </form>
+</section>
+
+<!-- Movies Grid -->
+<section class="movies-section">
+    {% if movies %}
+        <div class="movies-header">
+            <h2>
+                {% if request.GET.search or request.GET.category %}
+                    Search Results
+                {% else %}
+                    All Movies
+                {% endif %}
+            </h2>
+            <p class="movie-count">{{ movies.count }} movie{{ movies.count|pluralize }}</p>
         </div>
 
-    </div>
+        <div class="movies-grid">
+            {% for movie in movies %}
+                <div class="movie-card">
+                    <!-- Poster Image -->
+                    <div class="movie-poster">
+                        <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster">
+                        <div class="movie-overlay">
+                            <a href="{% url 'movie_detail' movie.id %}" class="btn btn-small">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
 
-    {% empty %}
-
-    <div class="col-12">
-
-        <div class="alert alert-info">
-
-            No movies available.
-
+                    <!-- Movie Info -->
+                    <div class="movie-info">
+                        <h3>
+                            <a href="{% url 'movie_detail' movie.id %}">{{ movie.title }}</a>
+                        </h3>
+                        <div class="movie-meta">
+                            <span class="category-badge">{{ movie.category.name }}</span>
+                            <span class="rating">
+                                <span class="star">★</span> {{ movie.rating }}
+                            </span>
+                        </div>
+                        <p class="movie-description">
+                            {{ movie.description|truncatewords:15 }}
+                        </p>
+                        <div class="movie-footer">
+                            <span class="release-year">{{ movie.release_date|date:"Y" }}</span>
+                            {% if user == movie.user %}
+                                <span class="owner-badge">Your Movie</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-
-    </div>
-
-    {% endfor %}
-
-</div>
-
-
+    {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <div class="empty-icon">🎬</div>
+            <h2>No movies found</h2>
+            <p>
+                {% if request.GET.search or request.GET.category %}
+                    Try adjusting your search or filter to find more movies.
+                {% else %}
+                    Be the first to add a movie! Sign in and start sharing your favorites.
+                {% endif %}
+            </p>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-primary">
+                    Join MovieHub
+                </a>
+            {% else %}
+                <a href="{% url 'add_movie' %}" class="btn btn-primary">
+                    Add a Movie
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
 
 {% endblock %}
