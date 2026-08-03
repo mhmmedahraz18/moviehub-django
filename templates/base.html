@@ -1,78 +1,69 @@
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Movie Recommendation{% endblock %}</title>
+    <title>{% block title %}MovieHub - Movie Recommendations{% endblock %}</title>
+    <meta name="description" content="Discover and share your favorite movies with MovieHub.">
+    <meta name="theme-color" content="#0F172A">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
+    <main>
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+                <a class="navbar-brand" href="/">
+                    <div class="navbar-icon">🎬</div>
+                    MovieHub
+                </a>
 
-        <a class="navbar-brand" href="/">🎬 MovieHub</a>
+                <div class="navbar-nav">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link" href="{% url 'home' %}">Movies</a>
 
-        <div class="navbar-nav ms-auto">
-<a class="nav-link" href="/">Home</a>
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'add_movie' %}">Add Movie</a>
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
 
-<a class="nav-link" href="{% url 'home' %}">Movies</a>
+        <!-- Messages -->
+        <div class="container" style="padding-top: var(--spacing-lg);">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
 
-<a class="nav-link" href="#">Categories</a>
-
-{% if user.is_authenticated %}
-
-    <a class="nav-link" href="{% url 'add_movie' %}">
-        Add Movie
-    </a>
-
-    <a class="nav-link" href="{% url 'logout' %}">
-        Logout
-    </a>
-
-{% else %}
-
-    <a class="nav-link" href="{% url 'login' %}">
-        Login
-    </a>
-
-    <a class="nav-link" href="{% url 'register' %}">
-        Register
-    </a>
-
-{% endif %}
-
+            <!-- Page Content -->
+            {% block content %}{% endblock %}
         </div>
+    </main>
 
-    </div>
-</nav>
-
-<div class="container mt-4">
-    {% if messages %}
-
-    {% for message in messages %}
-
-        <div class="alert alert-{{ message.tags }}">
-
-            {{ message }}
-
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MovieHub. All rights reserved.</p>
         </div>
+    </footer>
 
-    {% endfor %}
-
-{% endif %}
-
-    {% block content %}
-    {% endblock %}
-
-</div>
-
-<footer class="bg-dark text-white text-center p-3 mt-5">
-
-    Movie Recommendation Platform © 2026
-
-</footer>
-
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
