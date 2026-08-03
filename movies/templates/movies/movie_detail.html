@@ -6,61 +6,149 @@
 
 {% block content %}
 
-<div class="row">
+<div class="container py-4">
 
-    <div class="col-md-4">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
-        <img src="{{ movie.poster.url }}"
-             class="img-fluid rounded">
+        <div class="row g-0">
 
-    </div>
+            <!-- ================= POSTER ================= -->
 
-    <div class="col-md-8">
+            <div class="col-lg-4">
 
-        <h2>{{ movie.title }}</h2>
+                <img
+                    src="{{ movie.poster.url }}"
+                    class="img-fluid w-100 h-100"
+                    style="object-fit:cover; min-height:600px;">
 
-        <hr>
+            </div>
 
-        <p><strong>Description:</strong></p>
-        <p>{{ movie.description }}</p>
+            <!-- ================= DETAILS ================= -->
 
-        <p><strong>Actors:</strong> {{ movie.actors }}</p>
+            <div class="col-lg-8">
 
-        <p><strong>Category:</strong> {{ movie.category.name }}</p>
+                <div class="card-body p-5">
 
-        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
 
-        <p><strong>Rating:</strong> ⭐ {{ movie.rating }}</p>
+                        <h1 class="fw-bold">
 
-        <p>
+                            {{ movie.title }}
 
-            <a href="{{ movie.youtube_link }}"
-               target="_blank"
-               class="btn btn-danger">
+                        </h1>
 
-                Watch Trailer
+                        <span class="badge bg-warning text-dark fs-6">
 
-            </a>
+                            ⭐ {{ movie.rating }}/10
 
-            {% if user == movie.user %}
+                        </span>
 
-<a href="{% url 'edit_movie' movie.id %}"
-   class="btn btn-warning">
+                    </div>
 
-    Edit Movie
+                    <div class="mb-4">
 
-</a>
+                        <span class="badge bg-info fs-6">
 
-<a href="{% url 'delete_movie' movie.id %}"
-   class="btn btn-danger">
+                            {{ movie.category.name }}
 
-    Delete Movie
+                        </span>
 
-</a>
+                    </div>
 
-{% endif %}
+                    <hr>
 
-        </p>
+                    <!-- DESCRIPTION -->
+
+                    <h4 class="mb-3">
+
+                        🎬 Overview
+
+                    </h4>
+
+                    <p class="text-light-emphasis">
+
+                        {{ movie.description }}
+
+                    </p>
+
+                    <hr>
+
+                    <!-- ACTORS -->
+
+                    <h5>
+
+                        🎭 Cast
+
+                    </h5>
+
+                    <p>
+
+                        {{ movie.actors }}
+
+                    </p>
+
+                    <!-- RELEASE -->
+
+                    <h5 class="mt-4">
+
+                        📅 Release Date
+
+                    </h5>
+
+                    <p>
+
+                        {{ movie.release_date }}
+
+                    </p>
+
+                    <hr>
+
+                    <!-- BUTTONS -->
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+
+                        <a
+                            href="{{ movie.youtube_link }}"
+                            target="_blank"
+                            class="btn btn-danger">
+
+                            <i class="bi bi-youtube"></i>
+
+                            Watch Trailer
+
+                        </a>
+
+                        {% if user == movie.user %}
+
+                        <a
+                            href="{% url 'edit_movie' movie.id %}"
+                            class="btn btn-warning">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            Edit Movie
+
+                        </a>
+
+                        <a
+                            href="{% url 'delete_movie' movie.id %}"
+                            class="btn btn-outline-danger">
+
+                            <i class="bi bi-trash"></i>
+
+                            Delete Movie
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 

@@ -1,34 +1,69 @@
 {% extends 'base.html' %}
 
+{% block title %}
+Delete Movie
+{% endblock %}
+
 {% block content %}
 
-<h2>Delete Movie</h2>
+<div class="row justify-content-center">
 
-<p>
+    <div class="col-lg-6">
 
-Are you sure you want to delete
+        <div class="card shadow-lg border-danger rounded-4">
 
-<strong>{{ movie.title }}</strong>?
+            <div class="card-body text-center p-5">
 
-</p>
+                <i class="bi bi-exclamation-triangle-fill text-danger"
+                   style="font-size:70px;"></i>
 
-<form method="POST">
+                <h2 class="fw-bold mt-4">
 
-    {% csrf_token %}
+                    Delete Movie
 
-    <button class="btn btn-danger">
+                </h2>
 
-        Yes, Delete
+                <p class="lead mt-3">
 
-    </button>
+                    Are you sure you want to delete
 
-    <a href="{% url 'movie_detail' movie.id %}"
-       class="btn btn-secondary">
+                    <strong class="text-warning">
 
-        Cancel
+                        "{{ movie.title }}"
 
-    </a>
+                    </strong>?
 
-</form>
+                </p>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <button
+                        class="btn btn-danger me-2">
+
+                        <i class="bi bi-trash-fill"></i>
+
+                        Yes, Delete
+
+                    </button>
+
+                    <a
+                        href="{% url 'movie_detail' movie.id %}"
+                        class="btn btn-secondary">
+
+                        Cancel
+
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

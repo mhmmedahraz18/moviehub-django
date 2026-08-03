@@ -6,78 +6,72 @@ Home
 
 {% block content %}
 
-<h2 class="mb-4">Movie Recommendation Platform</h2>
+<!-- ================= HERO SECTION ================= -->
 
-<form method="GET">
+<div class="hero-section mb-5">
 
-<select name="category" class="form-select mb-3">
+    <div class="hero-overlay">
 
-<option value="">All Categories</option>
+        <div class="container">
 
-{% for category in categories %}
+            <div class="row align-items-center">
 
-<option value="{{ category.id }}">
+                <div class="col-lg-7">
 
-{{ category.name }}
+                    <span class="badge bg-warning text-dark mb-3 px-3 py-2">
 
-</option>
+                        🎬 Movie Recommendation Platform
 
-{% endfor %}
+                    </span>
 
-</select>
+                    <h1 class="display-3 fw-bold mb-3">
 
-<input
-type="text"
-name="search"
-class="form-control mb-3"
-placeholder="Search Movie">
+                        Discover Your Next
+                        <span class="text-warning">
 
-<button class="btn btn-primary">
+                            Favourite Movie
 
-Search
+                        </span>
 
-</button>
+                    </h1>
 
-</form>
+                    <p class="lead text-light mb-4">
 
+                        Browse thousands of recommendations,
+                        discover hidden gems, and share your
+                        favourite movies with movie lovers around
+                        the world.
 
-<div class="row">
+                    </p>
 
-    {% for movie in movies %}
+                    <a href="#movies" class="btn btn-warning btn-lg me-3">
 
-    <div class="col-md-4 mb-4">
+                        <i class="bi bi-play-fill"></i>
 
-        <div class="card h-100">
+                        Explore Movies
 
-            <img src="{{ movie.poster.url }}"
-                 class="card-img-top"
-                 style="height:400px; object-fit:cover;">
+                    </a>
 
-            <div class="card-body">
+                    {% if user.is_authenticated %}
 
-                <h5 class="card-title">
+                    <a href="{% url 'add_movie' %}"
+                       class="btn btn-outline-light btn-lg">
 
-    <a href="{% url 'movie_detail' movie.id %}">
+                        <i class="bi bi-plus-circle"></i>
 
-        {{ movie.title }}
+                        Add Movie
 
-    </a>
+                    </a>
 
-</h5>
+                    {% endif %}
 
+                </div>
 
-                <p class="card-text">
-                    {{ movie.description|truncatewords:20 }}
-                </p>
+                <div class="col-lg-5 text-center">
 
-                <p>
-                    <strong>Category:</strong>
-                    {{ movie.category.name }}
-                </p>
+                    <i class="bi bi-film hero-icon"></i>
 
-                <p>
-                    ⭐ {{ movie.rating }}
-                </p>
+                </div>
 
             </div>
 
@@ -85,22 +79,200 @@ Search
 
     </div>
 
-    {% empty %}
+</div>
 
-    <div class="col-12">
+<!-- ================= SEARCH ================= -->
 
-        <div class="alert alert-info">
+<div class="card mb-5 shadow-lg">
 
-            No movies available.
+    <div class="card-body">
+
+        <form method="GET">
+
+            <div class="row g-3">
+
+                <div class="col-lg-4">
+
+                    <select
+                        name="category"
+                        class="form-select">
+
+                        <option value="">
+
+                            All Categories
+
+                        </option>
+
+                        {% for category in categories %}
+
+                        <option value="{{ category.id }}">
+
+                            {{ category.name }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search your favourite movie...">
+
+                </div>
+
+                <div class="col-lg-2 d-grid">
+
+                    <button
+                        class="btn btn-primary">
+
+                        <i class="bi bi-search"></i>
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ================= MOVIE SECTION ================= -->
+
+<div id="movies" class="mb-4">
+
+    <h2 class="fw-bold">
+
+        🍿 Recommended Movies
+
+    </h2>
+
+    <p class="text-secondary">
+
+        Browse recommendations from our community.
+
+    </p>
+
+</div>
+
+<div class="row g-4">
+
+{% for movie in movies %}
+
+<div class="col-lg-4 col-md-6">
+
+    <div class="card h-100">
+
+        <img
+            src="{{ movie.poster.url }}"
+            class="card-img-top"
+            style="height:420px; object-fit:cover;">
+
+        <div class="card-body d-flex flex-column">
+
+            <div class="mb-3">
+
+                <span class="badge bg-warning text-dark">
+
+                    ⭐ {{ movie.rating }}
+
+                </span>
+
+                <span class="badge bg-info">
+
+                    {{ movie.category.name }}
+
+                </span>
+
+            </div>
+
+            <h4 class="fw-bold">
+
+                {{ movie.title }}
+
+            </h4>
+
+            <p class="text-light-emphasis">
+
+                {{ movie.description|truncatewords:18 }}
+
+            </p>
+
+            <div class="mt-auto">
+
+                <a
+                    href="{% url 'movie_detail' movie.id %}"
+                    class="btn btn-primary w-100">
+
+                    <i class="bi bi-film"></i>
+
+                    View Details
+
+                </a>
+
+            </div>
 
         </div>
 
     </div>
 
-    {% endfor %}
+</div>
+
+{% empty %}
+
+<div class="col-12">
+
+    <div class="text-center py-5">
+
+        <i
+            class="bi bi-camera-reels"
+            style="font-size:70px;color:#94A3B8;">
+
+        </i>
+
+        <h3 class="mt-4">
+
+            No Movies Found
+
+        </h3>
+
+        <p class="text-secondary">
+
+            Start by adding your first movie recommendation.
+
+        </p>
+
+        {% if user.is_authenticated %}
+
+        <a
+            href="{% url 'add_movie' %}"
+            class="btn btn-primary">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Add Movie
+
+        </a>
+
+        {% endif %}
+
+    </div>
 
 </div>
 
+{% endfor %}
 
+</div>
 
 {% endblock %}

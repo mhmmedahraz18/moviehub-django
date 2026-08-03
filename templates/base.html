@@ -1,78 +1,835 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Movie Recommendation{% endblock %}</title>
 
+    <title>{% block title %}MovieHub{% endblock %}</title>
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        :root{
+
+            --bg:#0B1120;
+            --surface:#111827;
+            --card:#1E293B;
+            --primary:#FBBF24;
+            --secondary:#38BDF8;
+            --text:#F8FAFC;
+            --muted:#94A3B8;
+            --border:#334155;
+
+        }
+
+        *{
+
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+
+        }
+
+        body{
+
+            background:var(--bg);
+            color:var(--text);
+            min-height:100vh;
+
+        }
+
+        a{
+
+            text-decoration:none;
+            transition:.3s;
+
+        }
+
+        .container{
+
+            max-width:1200px;
+
+        }
+        html{
+
+    scroll-behavior:smooth;
+
+}
+
+        /* ================= REGISTER FORM ================= */
+
+form p{
+
+    margin-bottom:20px;
+
+}
+
+form label{
+
+    display:block;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+    color:#F8FAFC;
+
+}
+
+form input,
+form textarea,
+form select{
+
+    width:100%;
+
+    padding:12px 15px;
+
+    border-radius:12px;
+
+    border:1px solid #334155;
+
+    background:#0F172A;
+
+    color:#F8FAFC;
+
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus{
+
+    outline:none;
+
+    border-color:#FBBF24;
+
+    box-shadow:0 0 0 .2rem rgba(251,191,36,.15);
+
+}
+
+.helptext{
+
+    display:block;
+
+    font-size:.85rem;
+
+    color:#94A3B8;
+
+    margin-top:5px;
+
+}
+
+.errorlist{
+
+    color:#EF4444;
+
+    list-style:none;
+
+    padding:0;
+
+    margin-top:5px;
+
+    font-size:.9rem;
+
+}
+
+       /* ================= HERO ================= */
+
+.hero-section{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(11,17,32,.96),
+        rgba(30,41,59,.95)
+    );
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    min-height:450px;
+
+    display:flex;
+
+    align-items:center;
+
+    margin-top:10px;
+
+    position:relative;
+
+}
+
+.hero-section::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    radial-gradient(circle at top right,
+    rgba(251,191,36,.15),
+    transparent 40%),
+
+    radial-gradient(circle at bottom left,
+    rgba(56,189,248,.12),
+    transparent 40%);
+
+}
+
+.hero-overlay{
+
+    width:100%;
+
+    padding:70px 40px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.hero-icon{
+
+    font-size:220px;
+
+    color:rgba(251,191,36,.15);
+
+    animation:floatMovie 5s ease-in-out infinite;
+
+}
+
+@keyframes floatMovie{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-18px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+        /* ===========================
+            NAVBAR
+        ============================ */
+
+        .navbar{
+
+            background:rgba(17,24,39,.9)!important;
+
+            backdrop-filter:blur(12px);
+
+            border-bottom:1px solid rgba(255,255,255,.08);
+
+            box-shadow:0 5px 20px rgba(0,0,0,.3);
+
+            padding:16px 0;
+
+        }
+
+        .navbar-brand{
+
+            font-size:1.5rem;
+
+            font-weight:700;
+
+            color:var(--primary)!important;
+
+        }
+
+        .nav-link{
+
+            color:var(--text)!important;
+
+            margin-left:18px;
+
+            position:relative;
+
+            font-weight:500;
+
+        }
+
+        .nav-link:hover{
+
+            color:var(--primary)!important;
+
+        }
+
+        .nav-link::after{
+
+            content:"";
+
+            position:absolute;
+
+            left:0;
+
+            bottom:-6px;
+
+            width:0%;
+
+            height:2px;
+
+            background:var(--primary);
+
+            transition:.3s;
+
+        }
+
+        .nav-link:hover::after{
+
+            width:100%;
+
+        }
+
+        /* =======================
+            BUTTONS
+        ======================== */
+
+        .btn{
+
+            border-radius:50px;
+
+            padding:10px 22px;
+
+            font-weight:600;
+
+            transition:.3s;
+
+        }
+
+        .btn:hover{
+
+            transform:translateY(-3px);
+
+        }
+
+        .btn-primary{
+
+            background:var(--primary);
+
+            border:none;
+
+            color:#000;
+
+        }
+
+        .btn-primary:hover{
+
+            background:#ffd34f;
+
+        }
+
+        .btn-success{
+
+            background:#16a34a;
+
+            border:none;
+
+        }
+
+        .btn-warning{
+
+            border:none;
+
+        }
+
+        .btn-danger{
+
+            border:none;
+
+        }
+
+        /* ======================
+            ALERTS
+        ======================= */
+
+        .alert{
+
+            border:none;
+
+            border-radius:14px;
+
+            animation:fade .4s ease;
+
+        }
+
+        @keyframes fade{
+
+            from{
+
+                opacity:0;
+                transform:translateY(-15px);
+
+            }
+
+            to{
+
+                opacity:1;
+                transform:translateY(0);
+
+            }
+
+        }
+
+        /* =====================
+            CARDS
+        ====================== */
+
+        .card{
+
+            background:var(--card);
+
+            border:none;
+
+            border-radius:18px;
+
+            overflow:hidden;
+
+            transition:.35s;
+
+            color:white;
+
+            box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+        }
+
+        .card:hover{
+
+            transform:translateY(-8px);
+
+            box-shadow:0 15px 35px rgba(0,0,0,.45);
+
+        }
+
+        .card-title a{
+
+            color:white;
+
+            font-weight:600;
+
+        }
+
+        .card-title a:hover{
+
+            color:var(--primary);
+
+        }
+
+        /* =======================
+            FOOTER
+        ======================== */
+
+        footer{
+
+            margin-top:80px;
+
+            background:var(--surface);
+
+            border-top:1px solid rgba(255,255,255,.08);
+
+        }
+
+        footer p{
+
+            color:var(--muted);
+
+        }
+
+        /* ================= MOVIE DETAIL ================= */
+
+.card img{
+
+    transition:.4s;
+
+}
+
+.card img:hover{
+
+    transform:scale(1.03);
+
+}
+
+.badge{
+
+    border-radius:50px;
+
+    padding:8px 16px;
+
+    font-weight:600;
+
+}
+
+.btn-outline-danger{
+
+    border-width:2px;
+
+}
+
+.btn-outline-danger:hover{
+
+    color:white;
+
+}
+
+.card-body h5{
+
+    color:#FBBF24;
+
+    margin-bottom:10px;
+
+}
+
+.card-body hr{
+
+    border-color:rgba(255,255,255,.08);
+
+}
+
+/* ================= LOGIN ================= */
+
+.input-group-text{
+
+    background:#1E293B;
+
+    color:#FBBF24;
+
+    border:1px solid #334155;
+
+}
+
+.form-control{
+
+    background:#0F172A;
+
+    color:#F8FAFC;
+
+    border:1px solid #334155;
+
+}
+
+.form-control:focus{
+
+    background:#0F172A;
+
+    color:white;
+
+    border-color:#FBBF24;
+
+    box-shadow:0 0 0 .2rem rgba(251,191,36,.15);
+
+}
+
+.form-label{
+
+    font-weight:600;
+
+}
+
+.card{
+
+    animation:fadeUp .5s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+    </style>
+
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- ========================= NAVBAR ========================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+
     <div class="container">
 
-        <a class="navbar-brand" href="/">🎬 MovieHub</a>
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <i class="bi bi-film"></i> MovieHub
+        </a>
 
-        <div class="navbar-nav ms-auto">
-<a class="nav-link" href="/">Home</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarContent">
 
-<a class="nav-link" href="{% url 'home' %}">Movies</a>
+            <span class="navbar-toggler-icon"></span>
 
-<a class="nav-link" href="#">Categories</a>
+        </button>
 
-{% if user.is_authenticated %}
+        <div class="collapse navbar-collapse" id="navbarContent">
 
-    <a class="nav-link" href="{% url 'add_movie' %}">
-        Add Movie
-    </a>
+            <ul class="navbar-nav mx-auto">
 
-    <a class="nav-link" href="{% url 'logout' %}">
-        Logout
-    </a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        Home
+                    </a>
+                </li>
 
-{% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}#movies">
+    Movies
+</a>
+                </li>
 
-    <a class="nav-link" href="{% url 'login' %}">
-        Login
-    </a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        Categories
+                    </a>
+                </li>
 
-    <a class="nav-link" href="{% url 'register' %}">
-        Register
-    </a>
+            </ul>
 
-{% endif %}
+            <div class="d-flex align-items-center">
+
+                {% if user.is_authenticated %}
+
+                    <span class="text-light me-3">
+
+                        <i class="bi bi-person-circle"></i>
+
+                        Hello,
+                        <strong>{{ user.username }}</strong>
+
+                    </span>
+
+                    <a
+                        href="{% url 'add_movie' %}"
+                        class="btn btn-primary me-2">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        Add Movie
+
+                    </a>
+
+                    <a
+                        href="{% url 'logout' %}"
+                        class="btn btn-outline-light">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Logout
+
+                    </a>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="btn btn-outline-light me-2">
+
+                        Login
+
+                    </a>
+
+                    <a
+                        href="{% url 'register' %}"
+                        class="btn btn-primary">
+
+                        Register
+
+                    </a>
+
+                {% endif %}
+
+            </div>
 
         </div>
 
     </div>
+
 </nav>
 
-<div class="container mt-4">
+<!-- ========================= CONTENT ========================= -->
+
+<div class="container py-5">
+
     {% if messages %}
 
-    {% for message in messages %}
+        {% for message in messages %}
 
-        <div class="alert alert-{{ message.tags }}">
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
 
-            {{ message }}
+                {{ message }}
 
-        </div>
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="alert">
 
-    {% endfor %}
+                </button>
 
-{% endif %}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
 
     {% block content %}
+
     {% endblock %}
 
 </div>
 
-<footer class="bg-dark text-white text-center p-3 mt-5">
+<!-- ========================= FOOTER ========================= -->
 
-    Movie Recommendation Platform © 2026
+<footer class="py-5">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-5">
+
+                <h3 class="text-warning">
+
+                    <i class="bi bi-film"></i>
+
+                    MovieHub
+
+                </h3>
+
+                <p>
+
+                    Discover • Recommend • Enjoy
+
+                </p>
+
+                <p>
+
+                    Share your favourite movies with everyone.
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <h5>
+
+                    Quick Links
+
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    <li>
+
+                        <a href="{% url 'home' %}" class="text-decoration-none text-light">
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="{% url 'home' %}" class="text-decoration-none text-light">
+
+                            Movies
+
+                        </a>
+
+                    </li>
+
+                    {% if not user.is_authenticated %}
+
+                    <li>
+
+                        <a href="{% url 'login' %}" class="text-decoration-none text-light">
+
+                            Login
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="{% url 'register' %}" class="text-decoration-none text-light">
+
+                            Register
+
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                <p>
+
+                    Built with
+
+                    ❤️ Django + Bootstrap
+
+                </p>
+
+                <p>
+
+                    © 2026 MovieHub
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </footer>
 
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
-</html>

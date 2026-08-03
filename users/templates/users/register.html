@@ -6,20 +6,77 @@ Register
 
 {% block content %}
 
-<h2 class="mb-4">Register</h2>
+<div class="row justify-content-center align-items-center" style="min-height:80vh;">
 
-<form method="POST">
+    <div class="col-lg-6 col-md-8">
 
-    {% csrf_token %}
+        <div class="card shadow-lg border-0 rounded-4">
 
-    {{ form.as_p }}
+            <div class="card-body p-5">
 
-    <button class="btn btn-success">
+                <div class="text-center mb-4">
 
-        Register
+                    <i class="bi bi-person-plus-fill text-warning"
+                       style="font-size:60px;"></i>
 
-    </button>
+                    <h2 class="fw-bold mt-3">
 
-</form>
+                        Create Your Account
+
+                    </h2>
+
+                    <p class="text-secondary">
+
+                        Join MovieHub and start sharing your favourite movies.
+
+                    </p>
+
+                </div>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <button
+                        type="submit"
+                        class="btn btn-success w-100 mt-3">
+
+                        <i class="bi bi-person-check-fill"></i>
+
+                        Register
+
+                    </button>
+
+                </form>
+
+                <hr class="my-4">
+
+                <div class="text-center">
+
+                    <p class="mb-1">
+
+                        Already have an account?
+
+                    </p>
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="text-warning fw-semibold">
+
+                        Login Here
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

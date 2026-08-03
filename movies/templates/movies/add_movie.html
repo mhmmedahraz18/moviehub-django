@@ -8,21 +8,53 @@ Add Movie
 
 <div class="row justify-content-center">
 
-    <div class="col-md-8">
+    <div class="col-lg-8">
 
-        <h2 class="mb-4">Add New Movie</h2>
+        <div class="card shadow-lg border-0 rounded-4">
 
-        <form method="POST" enctype="multipart/form-data">
+            <div class="card-body p-5">
 
-            {% csrf_token %}
+                <div class="text-center mb-4">
 
-            {{ form.as_p }}
+                    <i class="bi bi-camera-reels-fill text-warning"
+                       style="font-size:60px;"></i>
 
-            <button type="submit" class="btn btn-success">
-                Add Movie
-            </button>
+                    <h2 class="fw-bold mt-3">
 
-        </form>
+                        Add New Movie
+
+                    </h2>
+
+                    <p class="text-secondary">
+
+                        Share your favourite movie with the MovieHub community.
+
+                    </p>
+
+                </div>
+
+                <form method="POST"
+                      enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <button
+                        type="submit"
+                        class="btn btn-success w-100 mt-3">
+
+                        <i class="bi bi-plus-circle-fill"></i>
+
+                        Add Movie
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
 
     </div>
 
