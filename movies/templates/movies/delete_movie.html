@@ -1,34 +1,50 @@
 {% extends 'base.html' %}
 
+{% block title %}Delete Movie - MovieHub{% endblock %}
+
 {% block content %}
 
-<h2>Delete Movie</h2>
+<!-- Delete Confirmation Modal -->
+<div class="delete-modal-overlay">
+    <div class="delete-modal">
+        <!-- Warning Icon -->
+        <div class="delete-icon">⚠️</div>
 
-<p>
+        <!-- Title -->
+        <h2>Delete Movie</h2>
 
-Are you sure you want to delete
+        <!-- Message -->
+        <p class="delete-message">
+            You are about to delete <strong>{{ movie.title }}</strong>. This action cannot be undone.
+        </p>
 
-<strong>{{ movie.title }}</strong>?
+        <!-- Movie Preview -->
+        <div class="delete-preview">
+            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster">
+            <div class="delete-preview-info">
+                <h3>{{ movie.title }}</h3>
+                <p>{{ movie.description|truncatewords:15 }}</p>
+            </div>
+        </div>
 
-</p>
+        <!-- Confirmation Text -->
+        <div class="delete-warning">
+            <p>All associated data will be permanently removed from MovieHub.</p>
+        </div>
 
-<form method="POST">
+        <!-- Form Actions -->
+        <form method="POST" class="delete-form">
+            {% csrf_token %}
 
-    {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-large delete-btn">
+                Yes, Delete Movie
+            </button>
 
-    <button class="btn btn-danger">
-
-        Yes, Delete
-
-    </button>
-
-    <a href="{% url 'movie_detail' movie.id %}"
-       class="btn btn-secondary">
-
-        Cancel
-
-    </a>
-
-</form>
+            <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary btn-large">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
 
 {% endblock %}
