@@ -1,69 +1,88 @@
 {% extends 'base.html' %}
 
-{% block title %}
-{{ movie.title }}
-{% endblock %}
+{% block title %}{{ movie.title }} - MovieHub{% endblock %}
 
 {% block content %}
 
-<div class="row">
+<!-- Breadcrumb -->
+<nav class="breadcrumb-nav">
+    <a href="{% url 'home' %}">Movies</a>
+    <span class="separator">/</span>
+    <span class="current">{{ movie.title }}</span>
+</nav>
 
-    <div class="col-md-4">
+<!-- Movie Detail Section -->
+<section class="movie-detail-section">
+    <div class="movie-detail-container">
+        <!-- Poster Column -->
+        <div class="movie-detail-poster">
+            <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster">
+        </div>
 
-        <img src="{{ movie.poster.url }}"
-             class="img-fluid rounded">
+        <!-- Info Column -->
+        <div class="movie-detail-info">
+            <!-- Title & Rating -->
+            <div class="movie-detail-header">
+                <h1>{{ movie.title }}</h1>
+                <div class="movie-rating-large">
+                    <span class="star">★</span>
+                    <span class="rating-value">{{ movie.rating }}/10</span>
+                </div>
+            </div>
 
+            <!-- Meta Info Grid -->
+            <div class="movie-meta-grid">
+                <div class="meta-item">
+                    <label>Category</label>
+                    <p class="meta-badge">{{ movie.category.name }}</p>
+                </div>
+                <div class="meta-item">
+                    <label>Release Year</label>
+                    <p>{{ movie.release_date|date:"Y" }}</p>
+                </div>
+                <div class="meta-item">
+                    <label>Full Release Date</label>
+                    <p>{{ movie.release_date|date:"M d, Y" }}</p>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="movie-description-section">
+                <h3>About This Movie</h3>
+                <p>{{ movie.description }}</p>
+            </div>
+
+            <!-- Actors -->
+            <div class="movie-actors-section">
+                <h3>Cast</h3>
+                <p>{{ movie.actors }}</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="movie-actions">
+                <a href="{{ movie.youtube_link }}" target="_blank" class="btn btn-primary btn-large">
+                    <span>▶</span> Watch Trailer
+                </a>
+
+                {% if user == movie.user %}
+                    <a href="{% url 'edit_movie' movie.id %}" class="btn btn-secondary btn-large">
+                        Edit Movie
+                    </a>
+                    <a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger btn-large">
+                        Delete Movie
+                    </a>
+                {% endif %}
+            </div>
+
+            <!-- Added By -->
+            <div class="movie-attribution">
+                <p>
+                    <span class="label">Added by:</span>
+                    <span class="username">{{ movie.user.username }}</span>
+                </p>
+            </div>
+        </div>
     </div>
-
-    <div class="col-md-8">
-
-        <h2>{{ movie.title }}</h2>
-
-        <hr>
-
-        <p><strong>Description:</strong></p>
-        <p>{{ movie.description }}</p>
-
-        <p><strong>Actors:</strong> {{ movie.actors }}</p>
-
-        <p><strong>Category:</strong> {{ movie.category.name }}</p>
-
-        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-
-        <p><strong>Rating:</strong> ⭐ {{ movie.rating }}</p>
-
-        <p>
-
-            <a href="{{ movie.youtube_link }}"
-               target="_blank"
-               class="btn btn-danger">
-
-                Watch Trailer
-
-            </a>
-
-            {% if user == movie.user %}
-
-<a href="{% url 'edit_movie' movie.id %}"
-   class="btn btn-warning">
-
-    Edit Movie
-
-</a>
-
-<a href="{% url 'delete_movie' movie.id %}"
-   class="btn btn-danger">
-
-    Delete Movie
-
-</a>
-
-{% endif %}
-
-        </p>
-
-    </div>
-
-</div>
+</section>
 
 {% endblock %}

@@ -1,27 +1,187 @@
 {% extends 'base.html' %}
 
+{% block title %}Edit Movie - MovieHub{% endblock %}
+
 {% block content %}
 
-<h2>Edit Movie</h2>
+<!-- Page Header -->
+<div class="form-page-header">
+    <h1>Edit Movie</h1>
+    <p>Update the movie details</p>
+</div>
 
-<form method="POST" enctype="multipart/form-data">
+<!-- Form Container -->
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data" class="movie-form" novalidate>
+        {% csrf_token %}
 
-    {% csrf_token %}
+        <!-- Title -->
+        <div class="form-section">
+            <label for="{{ form.title.id_for_label }}">Movie Title</label>
+            <input
+                type="text"
+                id="{{ form.title.id_for_label }}"
+                name="title"
+                value="{{ form.title.value|default:'' }}"
+                placeholder="Enter movie title"
+                required
+                class="form-input"
+            >
+            {% if form.title.errors %}
+                <span class="form-error">{{ form.title.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-    {{ form.as_p }}
+        <!-- Release Date -->
+        <div class="form-section">
+            <label for="{{ form.release_date.id_for_label }}">Release Date</label>
+            <input
+                type="date"
+                id="{{ form.release_date.id_for_label }}"
+                name="release_date"
+                value="{{ form.release_date.value|date:'Y-m-d'|default:'' }}"
+                required
+                class="form-input"
+            >
+            {% if form.release_date.errors %}
+                <span class="form-error">{{ form.release_date.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-    <button type="submit" class="btn btn-warning">
-        Update Movie
-    </button>
+        <!-- Category -->
+        <div class="form-section">
+            <label for="{{ form.category.id_for_label }}">Category</label>
+            <select
+                id="{{ form.category.id_for_label }}"
+                name="category"
+                required
+                class="form-input"
+            >
+                <option value="">Select a category</option>
+                {% for id, name in form.category.field.choices %}
+                    {% if id %}
+                        <option value="{{ id }}" {% if id|stringformat:"s" == form.category.value|stringformat:"s" %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            {% if form.category.errors %}
+                <span class="form-error">{{ form.category.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-</form>
+        <!-- Rating -->
+        <div class="form-section">
+            <label for="{{ form.rating.id_for_label }}">Rating (0-10)</label>
+            <input
+                type="number"
+                id="{{ form.rating.id_for_label }}"
+                name="rating"
+                value="{{ form.rating.value|default:'' }}"
+                min="0"
+                max="10"
+                step="0.1"
+                placeholder="e.g., 8.5"
+                required
+                class="form-input"
+            >
+            {% if form.rating.errors %}
+                <span class="form-error">{{ form.rating.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-{% if user == movie.user %}
+        <!-- Actors -->
+        <div class="form-section">
+            <label for="{{ form.actors.id_for_label }}">Cast (comma-separated)</label>
+            <input
+                type="text"
+                id="{{ form.actors.id_for_label }}"
+                name="actors"
+                value="{{ form.actors.value|default:'' }}"
+                placeholder="e.g., Actor 1, Actor 2, Actor 3"
+                required
+                class="form-input"
+            >
+            {% if form.actors.errors %}
+                <span class="form-error">{{ form.actors.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-<a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger">
-    Delete Movie
-</a>
+        <!-- Description -->
+        <div class="form-section">
+            <label for="{{ form.description.id_for_label }}">Description</label>
+            <textarea
+                id="{{ form.description.id_for_label }}"
+                name="description"
+                placeholder="Write a compelling description of the movie..."
+                required
+                class="form-input form-textarea"
+                rows="6"
+            >{{ form.description.value|default:'' }}</textarea>
+            {% if form.description.errors %}
+                <span class="form-error">{{ form.description.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-{% endif %}
+        <!-- YouTube Link -->
+        <div class="form-section">
+            <label for="{{ form.youtube_link.id_for_label }}">YouTube Trailer Link</label>
+            <input
+                type="url"
+                id="{{ form.youtube_link.id_for_label }}"
+                name="youtube_link"
+                value="{{ form.youtube_link.value|default:'' }}"
+                placeholder="https://www.youtube.com/watch?v=..."
+                required
+                class="form-input"
+            >
+            {% if form.youtube_link.errors %}
+                <span class="form-error">{{ form.youtube_link.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Poster Image -->
+        <div class="form-section">
+            <label for="{{ form.poster.id_for_label }}">Movie Poster</label>
+            {% if movie.poster %}
+                <div class="current-poster">
+                    <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster">
+                    <p class="poster-note">Current poster</p>
+                </div>
+            {% endif %}
+            <div class="file-upload-wrapper">
+                <input
+                    type="file"
+                    id="{{ form.poster.id_for_label }}"
+                    name="poster"
+                    accept="image/*"
+                    class="file-input"
+                >
+                <label for="{{ form.poster.id_for_label }}" class="file-label">
+                    <span class="upload-icon">📸</span>
+                    <span class="upload-text">Click to replace poster image</span>
+                    <span class="upload-hint">(JPG, PNG, WebP - max 5MB)</span>
+                </label>
+            </div>
+            {% if form.poster.errors %}
+                <span class="form-error">{{ form.poster.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-large">
+                Update Movie
+            </button>
+            <a href="{% url 'movie_detail' movie.id %}" class="btn btn-secondary btn-large">
+                Cancel
+            </a>
+            <a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger btn-large">
+                Delete Movie
+            </a>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

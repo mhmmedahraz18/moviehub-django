@@ -1,31 +1,172 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Add Movie
-{% endblock %}
+{% block title %}Add Movie - MovieHub{% endblock %}
 
 {% block content %}
 
-<div class="row justify-content-center">
+<!-- Page Header -->
+<div class="form-page-header">
+    <h1>Add New Movie</h1>
+    <p>Share your favorite movie with the MovieHub community</p>
+</div>
 
-    <div class="col-md-8">
+<!-- Form Container -->
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data" class="movie-form" novalidate>
+        {% csrf_token %}
 
-        <h2 class="mb-4">Add New Movie</h2>
+        <!-- Title -->
+        <div class="form-section">
+            <label for="{{ form.title.id_for_label }}">Movie Title</label>
+            <input
+                type="text"
+                id="{{ form.title.id_for_label }}"
+                name="title"
+                placeholder="Enter movie title"
+                required
+                class="form-input"
+            >
+            {% if form.title.errors %}
+                <span class="form-error">{{ form.title.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-        <form method="POST" enctype="multipart/form-data">
+        <!-- Release Date -->
+        <div class="form-section">
+            <label for="{{ form.release_date.id_for_label }}">Release Date</label>
+            <input
+                type="date"
+                id="{{ form.release_date.id_for_label }}"
+                name="release_date"
+                required
+                class="form-input"
+            >
+            {% if form.release_date.errors %}
+                <span class="form-error">{{ form.release_date.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-            {% csrf_token %}
+        <!-- Category -->
+        <div class="form-section">
+            <label for="{{ form.category.id_for_label }}">Category</label>
+            <select
+                id="{{ form.category.id_for_label }}"
+                name="category"
+                required
+                class="form-input"
+            >
+                <option value="">Select a category</option>
+                {% for id, name in form.category.field.choices %}
+                    {% if id %}
+                        <option value="{{ id }}">{{ name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            {% if form.category.errors %}
+                <span class="form-error">{{ form.category.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-            {{ form.as_p }}
+        <!-- Rating -->
+        <div class="form-section">
+            <label for="{{ form.rating.id_for_label }}">Rating (0-10)</label>
+            <input
+                type="number"
+                id="{{ form.rating.id_for_label }}"
+                name="rating"
+                min="0"
+                max="10"
+                step="0.1"
+                placeholder="e.g., 8.5"
+                required
+                class="form-input"
+            >
+            {% if form.rating.errors %}
+                <span class="form-error">{{ form.rating.errors.0 }}</span>
+            {% endif %}
+        </div>
 
-            <button type="submit" class="btn btn-success">
+        <!-- Actors -->
+        <div class="form-section">
+            <label for="{{ form.actors.id_for_label }}">Cast (comma-separated)</label>
+            <input
+                type="text"
+                id="{{ form.actors.id_for_label }}"
+                name="actors"
+                placeholder="e.g., Actor 1, Actor 2, Actor 3"
+                required
+                class="form-input"
+            >
+            {% if form.actors.errors %}
+                <span class="form-error">{{ form.actors.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Description -->
+        <div class="form-section">
+            <label for="{{ form.description.id_for_label }}">Description</label>
+            <textarea
+                id="{{ form.description.id_for_label }}"
+                name="description"
+                placeholder="Write a compelling description of the movie..."
+                required
+                class="form-input form-textarea"
+                rows="6"
+            ></textarea>
+            {% if form.description.errors %}
+                <span class="form-error">{{ form.description.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <!-- YouTube Link -->
+        <div class="form-section">
+            <label for="{{ form.youtube_link.id_for_label }}">YouTube Trailer Link</label>
+            <input
+                type="url"
+                id="{{ form.youtube_link.id_for_label }}"
+                name="youtube_link"
+                placeholder="https://www.youtube.com/watch?v=..."
+                required
+                class="form-input"
+            >
+            {% if form.youtube_link.errors %}
+                <span class="form-error">{{ form.youtube_link.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Poster Image -->
+        <div class="form-section">
+            <label for="{{ form.poster.id_for_label }}">Movie Poster</label>
+            <div class="file-upload-wrapper">
+                <input
+                    type="file"
+                    id="{{ form.poster.id_for_label }}"
+                    name="poster"
+                    accept="image/*"
+                    required
+                    class="file-input"
+                >
+                <label for="{{ form.poster.id_for_label }}" class="file-label">
+                    <span class="upload-icon">📸</span>
+                    <span class="upload-text">Click to upload poster image</span>
+                    <span class="upload-hint">(JPG, PNG, WebP - max 5MB)</span>
+                </label>
+            </div>
+            {% if form.poster.errors %}
+                <span class="form-error">{{ form.poster.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-large">
                 Add Movie
             </button>
-
-        </form>
-
-    </div>
-
+            <a href="{% url 'home' %}" class="btn btn-secondary btn-large">
+                Cancel
+            </a>
+        </div>
+    </form>
 </div>
 
 {% endblock %}
