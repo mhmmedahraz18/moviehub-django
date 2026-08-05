@@ -25,11 +25,7 @@ SECRET_KEY = 'django-insecure-z$6j68i)#udzjh4-baz0jz8)!_@fge&ea3#g#j76e@x)w=4-0a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    "moviehub-django.vercel.app",
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
