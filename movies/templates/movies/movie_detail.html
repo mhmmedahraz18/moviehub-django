@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
 {{ movie.title }}
 {% endblock %}
@@ -16,10 +16,22 @@
 
             <div class="col-lg-4">
 
-                <img
-                    src="{{ movie.poster.url }}"
-                    class="img-fluid w-100 h-100"
-                    style="object-fit:cover; min-height:600px;">
+               {% if movie.title == "Inception" %}
+    <img
+        src="https://raw.githubusercontent.com/mhmmedahraz18/moviehub-django/main/movies/static/movies/posters/inception.jpg"
+        class="img-fluid w-100 h-100"
+        style="object-fit:cover; min-height:600px;">
+{% elif movie.title == "Interstellar" %}
+    <img
+        src="https://raw.githubusercontent.com/mhmmedahraz18/moviehub-django/main/movies/static/movies/posters/interstellar.jpg"
+        class="img-fluid w-100 h-100"
+        style="object-fit:cover; min-height:600px;">
+{% else %}
+    <img
+        src="https://via.placeholder.com/500x700?text=No+Poster"
+        class="img-fluid w-100 h-100"
+        style="object-fit:cover; min-height:600px;">
+{% endif %}
 
             </div>
 
